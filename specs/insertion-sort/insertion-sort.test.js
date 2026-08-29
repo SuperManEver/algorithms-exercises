@@ -43,7 +43,7 @@ function insertionSort(nums) {
 
 // unit tests
 // do not modify the below code
-test.only('insertion sort', function () {
+test.skip('insertion sort', function () {
   const nums = [10, 5, 3, 8, 2, 6, 4, 7, 9, 1];
 
   console.log('before: ', nums);

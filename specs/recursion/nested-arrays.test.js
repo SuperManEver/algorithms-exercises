@@ -10,10 +10,26 @@
  */
 
 function nestedAdd(array) {
-  // write code here
+  if (array == undefined) {
+    return 0;
+  }
+
+  if (Array.isArray(array) && array.length === 0) {
+    return 0;
+  }
+
+  if (!Array.isArray(array)) {
+    return array;
+  }
+
+  const [first, ...rest] = array;
+
+  return nestedAdd(first) + nestedAdd(rest);
 }
 
-test.skip("nested arrays addition", () => {
+test.only('nested arrays addition', () => {
+  expect(nestedAdd([[], 1, 2, 3])).toEqual(6);
+  expect(nestedAdd([[0], [[1]], 1, 2, 3])).toEqual(7);
   expect(nestedAdd([1, 2, 3])).toEqual(6);
   expect(nestedAdd([1, [2], 3])).toEqual(6);
   expect(nestedAdd([[[[[[[[[5]]]]]]]]])).toEqual(5);
