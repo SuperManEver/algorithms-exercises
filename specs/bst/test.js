@@ -104,17 +104,15 @@ class Tree {
        * 3. Node has two children
        */
 
-      const leftSmallest = this.findSmallest(node.right);
+      if (node.left && node.right) {
+        const rightSmallest = this.findSmallest(node.right);
 
-      if (!leftSmallest) {
-        return null;
+        node.value = rightSmallest.value;
+
+        this.removeNode(node.right, rightSmallest.value);
+
+        return node;
       }
-
-      node.value = leftSmallest.value;
-
-      this.removeNode(node.right, leftSmallest.value);
-
-      return node.value;
     }
 
     if (node.value > value) {
@@ -154,8 +152,6 @@ class Tree {
 }
 
 function print(node, level) {
-  // console.log('node: ', node);
-
   if (!node) {
     console.log(multStr('\t', level), '');
   } else {
@@ -196,7 +192,7 @@ function multStr(symbol, num) {
 }
 
 function main() {
-  const nums = [10, 6, 8];
+  const nums = [10, 6, 5, 8, 3, 7];
 
   const tree = new Tree();
 
@@ -204,13 +200,11 @@ function main() {
     tree.add(num);
   });
 
-  tree.add(7);
+  // const objs = tree.toObject();
 
-  const objs = tree.toObject();
+  console.log(tree.toObject());
 
-  console.log(objs);
-
-  tree.removeNode(8);
+  tree.removeNode(tree.root, 6);
 
   console.log(tree.toObject());
 }
