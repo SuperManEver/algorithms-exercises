@@ -63,6 +63,69 @@ class Tree {
     }
   }
 
+  findSmallest(node) {
+    if (!node) {
+      return null;
+    }
+
+    if (!node.left) {
+      return node;
+    }
+
+    return this.findSmallest(node.left);
+  }
+
+  removeNode(node, value) {
+    if (!node) {
+      return null;
+    }
+
+    if (node.value === value) {
+      /**
+       * 1. node has no children
+       */
+      if (!node.left && !node.right) {
+        return null;
+      }
+
+      /**
+       * 2. Node has one child
+       */
+
+      if (node.left && !node.right) {
+        return node.left;
+      }
+
+      if (!node.left && node.right) {
+        return node.right;
+      }
+
+      /**
+       * 3. Node has two children
+       */
+
+      const leftSmallest = this.findSmallest(node.right);
+
+      if (!leftSmallest) {
+        return null;
+      }
+
+      node.value = leftSmallest.value;
+
+      this.removeNode(node.right, leftSmallest.value);
+
+      return node.value;
+    }
+
+    if (node.value > value) {
+      node.left = this.removeNode(node.left, value);
+    } else {
+      node.right = this.removeNode(node.right, value);
+    }
+
+    return node;
+  }
+
   add(value) {
     if (!this.root) {
       const node = new Node(value);
@@ -104,6 +167,22 @@ function print(node, level) {
   }
 }
 
+function getNode(node, value) {
+  if (!node) {
+    return null;
+  }
+
+  if (node.value === value) {
+    return node;
+  }
+
+  if (node.value > value) {
+    return getNode(node.left, value);
+  } else {
+    return getNode(node.right, value);
+  }
+}
+
 function multStr(symbol, num) {
   let result = '';
 
@@ -121,21 +200,19 @@ function main() {
 
   const tree = new Tree();
 
-  // nums.map((num) => tree.add(num));
-
   nums.forEach((num) => {
     tree.add(num);
   });
 
   tree.add(7);
 
-  // console.log(tree);
-
-  // print(tree.root, 5);
-
   const objs = tree.toObject();
 
   console.log(objs);
+
+  tree.removeNode(8);
+
+  console.log(tree.toObject());
 }
 
 main();
