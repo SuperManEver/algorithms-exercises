@@ -109,7 +109,7 @@ class Tree {
 
         node.value = rightSmallest.value;
 
-        this.removeNode(node.right, rightSmallest.value);
+        node.right = this.removeNode(node.right, rightSmallest.value);
 
         return node;
       }
@@ -122,6 +122,10 @@ class Tree {
     }
 
     return node;
+  }
+
+  remove(value) {
+    this.root = this.removeNode(this.root, value);
   }
 
   add(value) {
