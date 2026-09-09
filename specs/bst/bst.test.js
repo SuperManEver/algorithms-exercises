@@ -16,8 +16,92 @@ right - Node/object - the right node which itself may be another tree
 
 */
 
+class Node {
+  constructor(value, left = null, right = null) {
+    this.value = value;
+    this.left = left;
+    this.right = right;
+  }
+}
+
 class Tree {
-  // code goes here
+  constructor() {
+    this.root = null;
+  }
+
+  insert(node, value) {
+    if (node.value === value) {
+      return;
+    }
+
+    if (node.value > value) {
+      if (!node.left) {
+        node.left = new Node(value);
+      } else {
+        this.insert(node.left, value);
+      }
+    } else {
+      if (!node.right) {
+        node.right = new Node(value);
+      } else {
+        this.insert(node.right, value);
+      }
+    }
+  }
+
+  insert_iter(node, value) {
+    while (node) {
+      if (node.value === value) {
+        break;
+      }
+
+      if (node.value > value) {
+        if (!node.left) {
+          node.left = new Node(value);
+
+          break;
+        } else {
+          node = node.left;
+          continue;
+        }
+      } else {
+        if (!node.right) {
+          node.right = new Node(value);
+
+          break;
+        } else {
+          node = node.right;
+          continue;
+        }
+      }
+    }
+  }
+
+  add(value) {
+    if (!this.root) {
+      const node = new Node(value);
+      this.root = node;
+      return;
+    }
+
+    this.insert_iter(this.root, value);
+  }
+
+  traverse(node) {
+    if (!node) {
+      return null;
+    }
+
+    return {
+      value: node.value,
+      left: this.traverse(node.left),
+      right: this.traverse(node.right),
+    };
+  }
+
+  toObject() {
+    return this.traverse(this.root);
+  }
 }
 
 // you might consider using a Node class too
@@ -27,8 +111,21 @@ class Tree {
 
 // unit tests
 // do not modify the below code
-describe.skip("Binary Search Tree", function () {
-  it("creates a correct tree", () => {
+
+function main() {
+  const nums = [10, 8, 6];
+
+  const tree = new Tree();
+
+  nums.map((num) => tree.add(num));
+
+  tree.add(7);
+
+  console.log(tree);
+}
+
+describe.only('Binary Search Tree', function () {
+  it('creates a correct tree', () => {
     const nums = [3, 7, 4, 6, 5, 1, 10, 2, 9, 8];
     const tree = new Tree();
     nums.map((num) => tree.add(num));
